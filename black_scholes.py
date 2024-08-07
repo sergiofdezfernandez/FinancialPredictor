@@ -27,7 +27,7 @@ def estimation(prices, dt, number_of_days=31):
 result = estimation(data["price"][:-7], 1 / 253)
 brownian_motion = Brownian(0)
 
-
+    
 def plot_stock_price(mu, sigma, min_intervals, max_intervals):
     """
     Plots stock price for multiple scenarios
@@ -55,3 +55,4 @@ plt.plot(result[0] * np.arange(1, 59))
 # plt.xlim(51, 58)
 plt.show()
 # plot_stock_price(result[0], result[1], result[2], result[3])
+# Esto es lo que vio coto
