@@ -7,7 +7,7 @@ from brownian_motion import Brownian
 data = pd.read_csv("Datos.csv")
 
 
-def estimation(prices, dt, number_of_days=31):
+def estimation(prices, dt, number_of_days=7):
     logs_return = []
     for i in range(1, len(prices)):
         logs_return.append(prices[i] / prices[i - 1])
