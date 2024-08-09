@@ -3,8 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 from brownian_motion import Brownian
+import warnings
+
+
+
 
 data = pd.read_csv("Datos.csv")
+
 
 
 def estimation(prices, dt, number_of_days=7):
@@ -12,14 +17,17 @@ def estimation(prices, dt, number_of_days=7):
     for i in range(1, len(prices)):
         logs_return.append(prices[i] / prices[i - 1])
     logs_return = np.log(logs_return)
+    # Añado un check de la adecuación del modelo #
+    if(stats.shapiro(logs_return)[1] < 0.05):
+        warnings.warn("There is statistical evidence against the assumptions of the model")
     mu = np.mean(logs_return) / dt
     sigma = np.std(logs_return) / np.sqrt(dt)
     z_score = stats.norm.ppf(0.975)
     delta = [i * dt for i in range(number_of_days)]
     aux = np.sqrt(delta) * sigma * z_score + mu * np.array(delta)
     min_interval, max_interval = (
-        np.exp(-aux) * data["price"][len(data["price"]) - 1],
-        np.exp(+aux) * data["price"][len(data["price"]) - 1],
+        np.exp(-aux) * prices[len(prices)-1],
+        np.exp(+aux) * prices[len(prices)-1],
     )
     return (mu, sigma, min_interval, max_interval)
 
@@ -53,6 +61,7 @@ plt.plot(result[2])
 plt.plot(result[3])
 plt.plot(result[0] * np.arange(1, 59))
 # plt.xlim(51, 58)
-plt.show()
+#plt.show()
 # plot_stock_price(result[0], result[1], result[2], result[3])
-# Esto es lo que vio coto
+
+
